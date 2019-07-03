@@ -4,12 +4,10 @@ Source code of Feature Encoding and Model Training for cardinality and cost esti
 
 ### Citation
 ```
-@misc{sun2019endtoend,
-    title={An End-to-End Learning-based Cost Estimator},
-    author={Ji Sun and Guoliang Li},
-    year={2019},
-    eprint={1906.02560},
-    archivePrefix={arXiv},
-    primaryClass={cs.DB}
+@article{sun2019endtoend,
+  title={An End-to-End Learning-based Cost Estimator},
+  author={Ji Sun and Guoliang Li},
+  journal={arXiv preprint arXiv:1906.02560},
+  year={2019}
 }
 ```
