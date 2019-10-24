@@ -1,5 +1,3 @@
-
-
 class Operator(object):
     def __init__(self, opt):
         self.op_type = 'Bool'
@@ -7,6 +5,7 @@ class Operator(object):
 
     def __str__(self):
         return 'Operator: ' + self.operator
+
 
 class Comparison(object):
     def __init__(self, opt, left_value, right_value):

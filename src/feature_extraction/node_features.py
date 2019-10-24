@@ -1,11 +1,15 @@
+import json
 
+from src.feature_extraction.predicate_features import *
+from src.feature_extraction.node_operations import *
 
 
 def class2json(instance):
-    if instance == None:
+    if instance is None:
         return json.dumps({})
     else:
         return json.dumps(todict(instance))
+
 
 def todict(obj, classkey=None):
     if isinstance(obj, dict):
@@ -27,13 +31,15 @@ def todict(obj, classkey=None):
     else:
         return obj
 
+
 def change_alias2table(column, alias2table):
     relation_name = column.split('.')[0]
     column_name = column.split('.')[1]
     if relation_name in alias2table:
-        return alias2table[relation_name]+'.'+column_name
+        return alias2table[relation_name] + '.' + column_name
     else:
         return column
+
 
 def extract_info_from_node(node, alias2table):
     relation_name, index_name = None, None
@@ -55,12 +61,12 @@ def extract_info_from_node(node, alias2table):
     elif node['Node Type'] == 'Result':
         return Result(), None
     elif node['Node Type'] == 'Hash Join':
-        return Join('Hash Join', pre2seq(node["Hash Cond"], alias2table, relation_name, index_name, True)), None
+        return Join('Hash Join', pre2seq(node["Hash Cond"], alias2table, relation_name, index_name)), None
     elif node['Node Type'] == 'Merge Join':
-        return Join('Merge Join', pre2seq(node["Merge Cond"], alias2table, relation_name, index_name, True)), None
+        return Join('Merge Join', pre2seq(node["Merge Cond"], alias2table, relation_name, index_name)), None
     elif node['Node Type'] == 'Nested Loop':
         if 'Join Filter' in node:
-            condition = pre2seq(node['Join Filter'], alias2table, relation_name, index_name, True)
+            condition = pre2seq(node['Join Filter'], alias2table, relation_name, index_name)
         else:
             condition = []
         return Join('Nested Loop', condition), None
@@ -94,8 +100,9 @@ def extract_info_from_node(node, alias2table):
         else:
             condition_seq_index = []
         relation_name, index_name = node["Relation Name"], node['Index Name']
-        if len(condition_seq_index) == 1 and re.match(r'[a-zA-Z]+', condition_seq_index[0].right_value) != None:
-            return Scan('Index Scan', condition_seq_filter, condition_seq_index, relation_name, index_name), condition_seq_index
+        if len(condition_seq_index) == 1 and re.match(r'[a-zA-Z]+', condition_seq_index[0].right_value) is not None:
+            return Scan('Index Scan', condition_seq_filter, condition_seq_index, relation_name,
+                        index_name), condition_seq_index
         else:
             return Scan('Index Scan', condition_seq_filter, condition_seq_index, relation_name, index_name), None
     elif node['Node Type'] == 'Bitmap Index Scan':
@@ -104,8 +111,9 @@ def extract_info_from_node(node, alias2table):
         else:
             condition_seq_index = []
         condition_seq_filter, relation_name, index_name = [], None, node['Index Name']
-        if len(condition_seq_index) == 1 and re.match(r'[a-zA-Z]+', condition_seq_index[0].right_value) != None:
-            return Scan('Bitmap Index Scan', condition_seq_filter, condition_seq_index, relation_name, index_name), condition_seq_index
+        if len(condition_seq_index) == 1 and re.match(r'[a-zA-Z]+', condition_seq_index[0].right_value) is not None:
+            return Scan('Bitmap Index Scan', condition_seq_filter, condition_seq_index, relation_name,
+                        index_name), condition_seq_index
         else:
             return Scan('Bitmap Index Scan', condition_seq_filter, condition_seq_index, relation_name, index_name), None
     elif node['Node Type'] == 'Index Only Scan':
@@ -114,10 +122,11 @@ def extract_info_from_node(node, alias2table):
         else:
             condition_seq_index = []
         condition_seq_filter, relation_name, index_name = [], None, node['Index Name']
-        if len(condition_seq_index) == 1 and re.match(r'[a-zA-Z]+', condition_seq_index[0].right_value) != None:
-            return Scan('Index Only Scan', condition_seq_filter, condition_seq_index, relation_name, index_name), condition_seq_index
+        if len(condition_seq_index) == 1 and re.match(r'[a-zA-Z]+', condition_seq_index[0].right_value) is not None:
+            return Scan('Index Only Scan', condition_seq_filter, condition_seq_index, relation_name,
+                        index_name), condition_seq_index
         else:
             return Scan('Index Only Scan', condition_seq_filter, condition_seq_index, relation_name, index_name), None
     else:
-        raise Exception('Unsupported Node Type: '+node['Node Type'])
+        raise Exception('Unsupported Node Type: ' + node['Node Type'])
         return None, None

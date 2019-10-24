@@ -1,9 +1,9 @@
-
-from src.plan_to_seq.node_operations import *
-from src.plan_to_seq.predicate_operators import *
-
 import re
+
 import pypred
+
+from src.feature_extraction.predicate_operators import *
+
 
 def remove_invalid_tokens(predicate):
     x = re.sub(r'\(\(([a-zA-Z_]+)\)::text ~~ \'(((?!::text).)*)\'::text\)', r"(\1 = '__LIKE__\2')", predicate)
@@ -17,7 +17,8 @@ def remove_invalid_tokens(predicate):
     x = re.sub(r'\(([a-z_0-9A-Z\-]+) = ANY \(\'(\{.+\})\'\[\]\)\)', r"(\1 = '__ANY__\2')", x)
     return x
 
-def predicates2seq(pre_tree, alias2table, relation_name, index_name, is_join_condition):
+
+def predicates2seq(pre_tree, alias2table, relation_name, index_name):
     current_level = -1
     current_line = 0
     sequence = []
@@ -56,20 +57,20 @@ def predicates2seq(pre_tree, alias2table, relation_name, index_name, is_join_con
                 result = p.search(operator_str)
                 right_value = result.group(1)
             else:
-                raise "Unsupport Value Type: "+right_type
-            if re.match(r'^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$', left_value) != None:
+                raise "Unsupport Value Type: " + right_type
+            if re.match(r'^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$', left_value) is not None:
                 left_relation = left_value.split('.')[0]
                 left_column = left_value.split('.')[1]
                 if left_relation in alias2table:
                     left_relation = alias2table[left_relation]
                 left_value = left_relation + '.' + left_column
             else:
-                if relation_name == None:
-                    relation = index_name.replace(left_value+'_', '')
+                if relation_name is None:
+                    relation = index_name.replace(left_value + '_', '')
                 else:
                     relation = relation_name
                 left_value = relation + '.' + left_value
-            if re.match(r'^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$', right_value) != None:
+            if re.match(r'^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$', right_value) is not None:
                 right_relation = right_value.split('.')[0]
                 right_column = right_value.split('.')[1]
                 if right_relation in alias2table:
@@ -79,12 +80,13 @@ def predicates2seq(pre_tree, alias2table, relation_name, index_name, is_join_con
             current_line += 1
     return sequence
 
-def pre2seq(predicates, alias2table, relation_name, index_name, is_join_condition = False):
+
+def pre2seq(predicates, alias2table, relation_name, index_name):
     pr = remove_invalid_tokens(predicates)
-    pr = pr.replace("''"," ")
+    pr = pr.replace("''", " ")
     p = pypred.Predicate(pr)
     try:
-        predicates = predicates2seq(p.description().strip('\n').split('\n'), alias2table, relation_name, index_name, is_join_condition)
+        predicates = predicates2seq(p.description().strip('\n').split('\n'), alias2table, relation_name, index_name)
     except:
         raise
     return predicates
