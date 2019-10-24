@@ -32,7 +32,7 @@ def encode_node_job(node, parameters):
                 extra_info_inx = parameters.columns_id[key]
                 extra_info_vec[extra_info_inx - 1] = 1
         elif operator == 'Hash Join' or operator == 'Merge Join' or operator == 'Nested Loop':
-            condition1_vec = encode_condition(node['condition'], None, None, parameters.condition_max_num)
+            condition1_vec = encode_condition(node['condition'], None, None, parameters)
         elif operator == 'Aggregate':
             for key in node['group_keys']:
                 extra_info_inx = parameters.columns_id[key]

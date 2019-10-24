@@ -1,10 +1,9 @@
 import unittest
 from src.feature_extraction.extract_features import *
 from src.training.train_and_test import *
-from src.internal_parameters import *
 
 class TestFeatureExtraction(unittest.TestCase):
-    def test_getData(self):
+    def test(self):
         dataset = load_dataset('/home/sunji/cost_estimation/test_files_open_source/imdb_data_csv')
         column2pos, indexes_id, tables_id, columns_id, physic_ops_id, compare_ops_id, bool_ops_id, table_names = prepare_dataset(dataset)
         sample_num = 1000

@@ -3,8 +3,8 @@ from src.plan_encoding.encoding_plans import *
 
 def normalize_label(labels, mini, maxi):
     labels_norm = (np.log(labels) - mini) / (maxi - mini)
-    labels_norm = np.min(labels_norm, np.ones_like(labels_norm))
-    labels_norm = np.max(labels_norm, np.zeros_like(labels_norm))
+    labels_norm = np.minimum(labels_norm, np.ones_like(labels_norm))
+    labels_norm = np.maximum(labels_norm, np.zeros_like(labels_norm))
     return labels_norm
 
 
