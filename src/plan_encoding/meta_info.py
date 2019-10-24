@@ -235,4 +235,4 @@ def prepare_dataset(database):
         for column in column2pos[table_name]:
             columns_id[table_name+'.'+column] = column_id
             column_id += 1
-    return column2pos, indexes_id, tables_id, columns_id, physic_ops_id, compare_ops_id, bool_ops_id
+    return column2pos, indexes_id, tables_id, columns_id, physic_ops_id, compare_ops_id, bool_ops_id, tables

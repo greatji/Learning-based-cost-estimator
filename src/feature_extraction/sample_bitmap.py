@@ -1,5 +1,5 @@
 import re
-
+import pandas as pd
 
 class TreeNode(object):
     def __init__(self, current_vec, parent):
@@ -95,11 +95,11 @@ def get_bitmap(root, data, sample, sample_num):
         bitmap = []
         if predicate['operator'] == 'AND':
             for child in root.get_children():
-                vec = get_bitmap(child)
+                vec = get_bitmap(child, data, sample, sample_num)
                 bitmap = bitand(bitmap, vec)
         elif predicate['operator'] == 'OR':
             for child in root.get_children():
-                vec = get_bitmap(child)
+                vec = get_bitmap(child, data, sample, sample_num)
                 bitmap = bitor(bitmap, vec)
         else:
             print(predicate['operator'])
@@ -109,29 +109,10 @@ def get_bitmap(root, data, sample, sample_num):
         return []
 
 
-def prepare_samples(data, sample_num):
+def prepare_samples(data, sample_num, tables):
     sample = dict()
-    sample['aka_name'] = data['aka_name'].sample(n=min(sample_num, len(data['aka_name'])))
-    sample['aka_title'] = data['aka_title'].sample(n=min(sample_num, len(data['aka_title'])))
-    sample['cast_info'] = data['cast_info'].sample(n=min(sample_num, len(data['cast_info'])))
-    sample['char_name'] = data['char_name'].sample(n=min(sample_num, len(data['char_name'])))
-    sample['company_name'] = data['company_name'].sample(n=min(sample_num, len(data['company_name'])))
-    sample['company_type'] = data['company_type'].sample(n=min(sample_num, len(data['company_type'])))
-    sample['comp_cast_type'] = data['comp_cast_type'].sample(n=min(sample_num, len(data['comp_cast_type'])))
-    sample['complete_cast'] = data['complete_cast'].sample(n=min(sample_num, len(data['complete_cast'])))
-    sample['info_type'] = data['info_type'].sample(n=min(sample_num, len(data['info_type'])))
-    sample['keyword'] = data['keyword'].sample(n=min(sample_num, len(data['keyword'])))
-    sample['kind_type'] = data['kind_type'].sample(n=min(sample_num, len(data['kind_type'])))
-    sample['link_type'] = data['link_type'].sample(n=min(sample_num, len(data['link_type'])))
-    sample['movie_companies'] = data['movie_companies'].sample(n=min(sample_num, len(data['movie_companies'])))
-    sample['movie_info'] = data['movie_info'].sample(n=min(sample_num, len(data['movie_info'])))
-    sample['movie_info_idx'] = data['movie_info_idx'].sample(n=min(sample_num, len(data['movie_info_idx'])))
-    sample['movie_keyword'] = data['movie_keyword'].sample(n=min(sample_num, len(data['movie_keyword'])))
-    sample['movie_link'] = data['movie_link'].sample(n=min(sample_num, len(data['movie_link'])))
-    sample['name'] = data['name'].sample(n=min(sample_num, len(data['name'])))
-    sample['person_info'] = data['person_info'].sample(n=min(sample_num, len(data['person_info'])))
-    sample['role_type'] = data['role_type'].sample(n=min(sample_num, len(data['role_type'])))
-    sample['title'] = data['title'].sample(n=min(sample_num, len(data['title'])))
+    for table_name in tables:
+        sample[table_name] = data[table_name].sample(n=min(sample_num, len(data[table_name])))
     return sample
 
 
