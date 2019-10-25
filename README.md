@@ -33,4 +33,4 @@ Password: end2endsun
 ```
 
 ### Contact
-If you have any issue, feel free to post on [project](https://github.com/greatji/Learning-based-cost-estimator)
+If you have any issue, feel free to post on [Project](https://github.com/greatji/Learning-based-cost-estimator).
