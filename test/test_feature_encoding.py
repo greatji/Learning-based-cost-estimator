@@ -9,9 +9,9 @@ class TestFeatureEncoding(unittest.TestCase):
         dataset = load_dataset('/home/sunji/cost_estimation/test_files_open_source/imdb_data_csv')
         column2pos, indexes_id, tables_id, columns_id, physic_ops_id, compare_ops_id, bool_ops_id, table_names = prepare_dataset(dataset)
         print ('data prepared')
-        word_vectors = load_dictionary('/home/sunji/learnedcardinality/string_words/wordvectors_updated.kv')
+        word_vectors = load_dictionary('/home/sunji/cost_estimation/test_files_open_source/wordvectors_updated.kv')
         print ('word_vectors loaded')
-        min_max_column = load_numeric_min_max('/home/sunji/learnedcardinality/min_max_vals.json')
+        min_max_column = load_numeric_min_max('/home/sunji/cost_estimation/test_files_open_source/min_max_vals.json')
         print ('min_max loaded')
 
         index_total_num = len(indexes_id)
