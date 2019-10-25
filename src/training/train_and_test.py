@@ -45,7 +45,7 @@ def qerror_loss(preds, targets, mini, maxi):
         torch.cat(qerror))
 
 
-def train(train_start, train_end, validate_start, validate_end, num_epochs, parameters):
+def train(train_start, train_end, validate_start, validate_end, num_epochs, parameters, directory):
     input_dim = parameters.condition_op_dim
     hidden_dim = 128
     hid_dim = 256
@@ -62,7 +62,7 @@ def train(train_start, train_end, validate_start, validate_end, num_epochs, para
         for batch_idx in range(train_start, train_end):
             print('batch_idx: ', batch_idx)
             target_cost, target_cardinality, operatorss, extra_infoss, condition1ss, condition2ss, sampless, condition_maskss, mapping = get_batch_job(
-                batch_idx)
+                batch_idx, directory=directory)
             target_cost, target_cardinality, operatorss, extra_infoss, condition1ss, condition2ss, sampless, condition_maskss, mapping = torch.FloatTensor(
                 target_cost), torch.FloatTensor(target_cardinality), torch.FloatTensor(operatorss), torch.FloatTensor(
                 extra_infoss), torch.FloatTensor(condition1ss), torch.FloatTensor(condition2ss), torch.FloatTensor(
@@ -104,7 +104,7 @@ def train(train_start, train_end, validate_start, validate_end, num_epochs, para
         for batch_idx in range(validate_start, validate_end):
             print('batch_idx: ', batch_idx)
             target_cost, target_cardinality, operatorss, extra_infoss, condition1ss, condition2ss, sampless, condition_maskss, mapping = get_batch_job(
-                batch_idx)
+                batch_idx, directory=directory)
             target_cost, target_cardinality, operatorss, extra_infoss, condition1ss, condition2ss, sampless, condition_maskss, mapping = torch.FloatTensor(
                 target_cost), torch.FloatTensor(target_cardinality), torch.FloatTensor(operatorss), torch.FloatTensor(
                 extra_infoss), torch.FloatTensor(condition1ss), torch.FloatTensor(condition2ss), torch.FloatTensor(
