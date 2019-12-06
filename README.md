@@ -23,12 +23,22 @@ module which is hard-coded for JOB workload.
 Password: end2endsun
 
 ### Citation
+If you use the code in your work, please cite our paper.  
 ```
-@article{sun2019endtoend,
-  title={An End-to-End Learning-based Cost Estimator},
-  author={Ji Sun and Guoliang Li},
-  journal={arXiv preprint arXiv:1906.02560},
-  year={2019}
+@article{DBLP:journals/pvldb/SunL19,
+  author    = {Ji Sun and
+               Guoliang Li},
+  title     = {An End-to-End Learning-based Cost Estimator},
+  journal   = {{PVLDB}},
+  volume    = {13},
+  number    = {3},
+  pages     = {307--319},
+  year      = {2019},
+  url       = {http://www.vldb.org/pvldb/vol13/p307-sun.pdf},
+  doi       = {10.14778/3368289.3368296},
+  timestamp = {Wed, 04 Dec 2019 19:13:52 +0100},
+  biburl    = {https://dblp.org/rec/bib/journals/pvldb/SunL19},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
